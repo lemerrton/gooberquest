@@ -7,8 +7,10 @@ import TaskCard from '@/components/TaskCard';
 import MorningBriefing from '@/components/MorningBriefing';
 import QuestLinePanel from '@/components/QuestLinePanel';
 import ProgressChart from '@/components/ProgressChart';
+import WarRoom from '@/components/WarRoom';
+import Achievements from '@/components/Achievements';
 
-type Tab = 'today' | 'quests' | 'stats';
+type Tab = 'today' | 'warroom' | 'quests' | 'stats';
 
 export default function Home() {
   const initializeDay = useAppStore((s) => s.initializeDay);
@@ -53,17 +55,22 @@ export default function Home() {
             <h1 className="text-xl font-bold text-white tracking-tight">GooberQuest</h1>
           </div>
           <div className="flex items-center gap-1 bg-gray-800 rounded-lg p-1">
-            {(['today', 'quests', 'stats'] as Tab[]).map((tab) => (
+            {([
+              { id: 'today', label: 'Today' },
+              { id: 'warroom', label: 'War Room' },
+              { id: 'quests', label: 'Quests' },
+              { id: 'stats', label: 'Stats' },
+            ] as { id: Tab; label: string }[]).map((tab) => (
               <button
-                key={tab}
-                onClick={() => setActiveTab(tab)}
-                className={`px-3 py-1.5 rounded-md text-sm font-medium transition-all ${
-                  activeTab === tab
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id)}
+                className={`px-2.5 sm:px-3 py-1.5 rounded-md text-xs sm:text-sm font-medium transition-all ${
+                  activeTab === tab.id
                     ? 'bg-indigo-600 text-white'
                     : 'text-gray-400 hover:text-white'
                 }`}
               >
-                {tab === 'today' ? 'Today' : tab === 'quests' ? 'Quests' : 'Stats'}
+                {tab.label}
               </button>
             ))}
           </div>
@@ -129,6 +136,8 @@ export default function Home() {
           </>
         )}
 
+        {activeTab === 'warroom' && <WarRoom />}
+
         {activeTab === 'quests' && (
           <div className="space-y-6">
             <div>
@@ -149,6 +158,8 @@ export default function Home() {
             </div>
 
             <ProgressChart />
+
+            <Achievements />
 
             <div className="grid grid-cols-2 gap-4">
               <div className="bg-gray-900/80 rounded-2xl p-5 border border-gray-700/50 text-center">

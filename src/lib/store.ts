@@ -49,8 +49,7 @@ export const useAppStore = create<AppState & Actions>()(
           return;
         }
 
-        const dayOfWeek = new Date().getDay();
-        const newTasks = generateDailyTasks(dayOfWeek);
+        const newTasks = generateDailyTasks(new Date());
 
         let player = state.player;
         player = updateStreak(player, today, false);
@@ -158,6 +157,13 @@ export const useAppStore = create<AppState & Actions>()(
     }),
     {
       name: 'goober-quest-storage',
+      version: 2,
+      // v2 added guides + specific missions to tasks; clear stale tasks so
+      // initializeDay regenerates them with the new fields.
+      migrate: (persisted: unknown) => {
+        const state = persisted as AppState & Actions;
+        return { ...state, tasks: [] };
+      },
     }
   )
 );

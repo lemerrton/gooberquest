@@ -1,5 +1,11 @@
 export type QuestLine = 'fitness' | 'ecommerce' | 'content';
 
+export interface TaskGuide {
+  steps: string[];
+  proTip?: string;
+  why?: string;
+}
+
 export interface DailyTask {
   id: string;
   questLine: QuestLine;
@@ -10,6 +16,8 @@ export interface DailyTask {
   completedAt?: string;
   recurring: boolean;
   priority: 'critical' | 'high' | 'medium' | 'low';
+  guide?: TaskGuide;
+  specificMission?: string;
 }
 
 export interface QuestLineConfig {

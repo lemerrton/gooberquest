@@ -2,6 +2,11 @@
 
 import { useAppStore } from '@/lib/store';
 import { format, differenceInDays } from 'date-fns';
+import {
+  getTodaysWorkout,
+  getTodaysMarketingMission,
+  getTodaysContentIdea,
+} from '@/lib/playbooks';
 
 export default function MorningBriefing() {
   const player = useAppStore((s) => s.player);
@@ -60,7 +65,7 @@ export default function MorningBriefing() {
       </div>
 
       {criticalTasks.length > 0 && (
-        <div className="bg-red-500/10 border border-red-500/20 rounded-xl p-3">
+        <div className="bg-red-500/10 border border-red-500/20 rounded-xl p-3 mb-4">
           <div className="text-xs font-bold text-red-400 uppercase mb-2">🎯 Critical Missions</div>
           {criticalTasks.map((t) => (
             <div key={t.id} className="text-sm text-red-200 flex items-center gap-2 py-0.5">
@@ -69,6 +74,26 @@ export default function MorningBriefing() {
           ))}
         </div>
       )}
+
+      {/* Today's intel snapshot */}
+      <div className="bg-black/20 rounded-xl p-3">
+        <div className="text-xs font-bold text-indigo-300 uppercase mb-2">📡 Today&apos;s Intel</div>
+        <div className="space-y-1.5 text-sm">
+          <div className="flex items-start gap-2 text-gray-200">
+            <span>💪</span>
+            <span>{getTodaysWorkout(today).name}</span>
+          </div>
+          <div className="flex items-start gap-2 text-gray-200">
+            <span>💰</span>
+            <span>{getTodaysMarketingMission(today).title}</span>
+          </div>
+          <div className="flex items-start gap-2 text-gray-200">
+            <span>🎬</span>
+            <span>{getTodaysContentIdea(today).title}</span>
+          </div>
+        </div>
+        <div className="text-[11px] text-indigo-400 mt-2">Full battle plans in the War Room tab →</div>
+      </div>
     </div>
   );
 }
